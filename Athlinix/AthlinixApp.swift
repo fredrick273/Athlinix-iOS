@@ -11,7 +11,7 @@ import SwiftUI
 struct AthlinixApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LogoScreen()
         }
     }
 }
