@@ -3,6 +3,7 @@ import SwiftUI
 struct PhoneNumberScreen: View {
     @State private var phoneNumber: String = ""
     @State private var selectedCountry: String = "US" // Default country code
+    @Binding var selectedButton: String // Add the binding for selectedButton
     private let countryCodes = ["US", "CA", "IN", "GB", "AU"] // Add more country codes as needed
 
     var body: some View {
@@ -39,7 +40,7 @@ struct PhoneNumberScreen: View {
             }
             .padding(.bottom, 20) // Padding below the HStack
 
-            NavigationLink(destination: BirthDateScreen()) {
+            NavigationLink(destination: BirthDateScreen(selectedButton: $selectedButton)) { // Pass the binding to BirthDateScreen
                 Text("Next")
                     .font(.headline)
                     .padding()
@@ -59,7 +60,9 @@ struct PhoneNumberScreen: View {
 }
 
 struct Phone_Previews: PreviewProvider {
+    @State static var dummyButton = "home"
+    
     static var previews: some View {
-        PhoneNumberScreen() // Preview the PhoneNumberScreen
+        PhoneNumberScreen(selectedButton: $dummyButton) // Simulate binding for preview
     }
 }

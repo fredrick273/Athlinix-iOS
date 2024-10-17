@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GenderScreen: View {
     @State private var selectedGender: String = ""
+    @Binding var selectedButton: String // Add the binding for selectedButton
 
     var body: some View {
         VStack {
@@ -17,7 +18,7 @@ struct GenderScreen: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding()
 
-            NavigationLink(destination: ProfilePhotoScreen()) {
+            NavigationLink(destination: ProfilePhotoScreen(selectedButton: $selectedButton)) { // Pass selectedButton binding
                 Text("Next")
                     .font(.headline)
                     .padding()
@@ -35,5 +36,6 @@ struct GenderScreen: View {
 }
 
 #Preview {
-    GenderScreen()
+    @State var dummyButton = "home"
+    GenderScreen(selectedButton: $dummyButton) // Simulate binding for preview
 }

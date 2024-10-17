@@ -3,6 +3,7 @@ import SwiftUI
 struct CreateAccountScreen: View {
     @State private var username: String = ""
     @State private var password: String = ""
+    @Binding var selectedButton: String // Add the binding for selectedButton
 
     var body: some View {
         VStack {
@@ -16,13 +17,13 @@ struct CreateAccountScreen: View {
                 .cornerRadius(5)
                 .padding()
             
-            TextField("Password", text: $password)
+            SecureField("Password", text: $password) // Use SecureField for password input
                 .padding()
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(5)
                 .padding()
             
-            NavigationLink(destination: PhoneNumberScreen()) {
+            NavigationLink(destination: PhoneNumberScreen(selectedButton: $selectedButton)) { // Pass the selectedButton to the next screen
                 Text("Next")
                     .font(.headline)
                     .padding()
@@ -65,12 +66,13 @@ struct CreateAccountScreen: View {
 
             Spacer()
         }
-//        .navigationTitle("Account Creation")
     }
 }
 
 struct CreateAccount_Previews: PreviewProvider {
+    @State static var dummyButton = "home"
+    
     static var previews: some View {
-        CreateAccountScreen() // Preview the CreateAccountScreen
+        CreateAccountScreen(selectedButton: $dummyButton) // Simulate binding for preview
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct YearsPlayingScreen: View {
     @State private var selectedYears: Int = 0
+    @Binding var selectedButton: String // Declare a binding for selectedButton
     let yearsOptions = Array(0...100) // Create an array from 0 to 100
 
     var body: some View {
@@ -20,7 +21,7 @@ struct YearsPlayingScreen: View {
             .frame(maxHeight: 200) // Adjust the height to suit the wheel display
             .padding()
 
-            NavigationLink(destination: HomeScreen()) {
+            NavigationLink(destination: HomeScreen(selectedButton: $selectedButton)) { // Pass the binding here
                 Text("Finish")
                     .font(.headline)
                     .padding()
@@ -40,6 +41,8 @@ struct YearsPlayingScreen: View {
 
 struct YearsPlaying_Previews: PreviewProvider {
     static var previews: some View {
-        YearsPlayingScreen() // Preview the YearsPlayingScreen
+        // Create a preview with a dummy binding
+        @State var dummyButton: String = "home"
+        return YearsPlayingScreen(selectedButton: $dummyButton) // Pass a binding for preview
     }
 }

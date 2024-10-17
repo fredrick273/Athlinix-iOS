@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RoleSelectionScreen: View {
     @State private var selectedRole: String = ""
+    @Binding var selectedButton: String // Declare a binding for selectedButton
 
     var body: some View {
         VStack(alignment: .leading) { // Align content to the leading edge (left)
@@ -24,7 +25,7 @@ struct RoleSelectionScreen: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding()
 
-            NavigationLink(destination: AthleteHeightScreen()) {
+            NavigationLink(destination: AthleteHeightScreen(selectedButton: $selectedButton)) { // Pass the binding here
                 Text("Next")
                     .font(.headline)
                     .padding()
@@ -42,8 +43,10 @@ struct RoleSelectionScreen: View {
     }
 }
 
-struct RoleSelection: PreviewProvider {
+struct RoleSelection_Previews: PreviewProvider {
     static var previews: some View {
-        RoleSelectionScreen() // Preview the RoleSelectionScreen
+        // Create a preview with a dummy binding
+        @State var dummyButton: String = "home"
+        return RoleSelectionScreen(selectedButton: $dummyButton) // Pass a binding for preview
     }
 }

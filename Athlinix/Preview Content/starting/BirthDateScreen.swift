@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BirthDateScreen: View {
     @State private var birthDate: Date = Date()
+    @Binding var selectedButton: String // Add the binding for selectedButton
 
     var body: some View {
         VStack {
@@ -16,7 +17,7 @@ struct BirthDateScreen: View {
                 .padding()
                 .frame(maxHeight: 200) // Adjust the height to suit the wheel display
 
-            NavigationLink(destination: LocationScreen()) {
+            NavigationLink(destination: LocationScreen(selectedButton: $selectedButton)) { // Pass the binding to LocationScreen
                 Text("Next")
                     .font(.headline)
                     .padding()
@@ -33,8 +34,7 @@ struct BirthDateScreen: View {
     }
 }
 
-struct dob: PreviewProvider {
-    static var previews: some View {
-        BirthDateScreen() // Preview the BirthDateScreen
-    }
+#Preview {
+    @State var dummyButton = "home"
+    BirthDateScreen(selectedButton: $dummyButton) // Simulate binding for preview
 }

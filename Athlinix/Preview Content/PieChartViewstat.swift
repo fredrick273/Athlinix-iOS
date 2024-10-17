@@ -40,7 +40,7 @@ struct PieChartViewStat: View {
             "Free Throws": Color.orange      // Custom color for free throws
         ])
         .chartLegend(position: .bottom) // Display legend at the bottom
-        .frame(height: 400) // Adjust height as needed
+        .frame(height: 250) // Adjust height as needed
     }
 }
 

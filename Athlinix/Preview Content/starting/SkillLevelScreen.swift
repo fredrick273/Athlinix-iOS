@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SkillLevelScreen: View {
     @State private var selectedSkillLevel: String = ""
+    @Binding var selectedButton: String // Declare a binding for selectedButton
     let skillLevels = ["Amateur", "Semi-Professional", "Professional"]
 
     var body: some View {
@@ -20,7 +21,7 @@ struct SkillLevelScreen: View {
             .frame(maxHeight: 200) // Adjust the height to suit the wheel display
             .padding()
 
-            NavigationLink(destination: YearsPlayingScreen()) {
+            NavigationLink(destination: YearsPlayingScreen(selectedButton: $selectedButton)) { // Pass the binding here
                 Text("Next")
                     .font(.headline)
                     .padding()
@@ -40,6 +41,8 @@ struct SkillLevelScreen: View {
 
 struct Skill_Previews: PreviewProvider {
     static var previews: some View {
-        SkillLevelScreen() // Preview the SkillLevelScreen
+        // Create a preview with a dummy binding
+        @State var dummyButton: String = "home"
+        return SkillLevelScreen(selectedButton: $dummyButton) // Pass a binding for preview
     }
 }

@@ -8,7 +8,7 @@ struct HeaderView: View {
                 Text("ATHLENIX")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundColor(.white).padding(.top,20)
 
                 Spacer()
 
@@ -19,24 +19,24 @@ struct HeaderView: View {
             .padding(.horizontal)
 
             HStack {
-                Image("logo") // Assuming you have an image named "profile"
+                Image("profile") // Assuming you have an image named "profile"
                     .resizable()
-                    .frame(width: 60, height: 60)
+                    .frame(width: 80, height: 80)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color.white, lineWidth: 2))
                 
                 VStack(alignment: .leading) {
-                    Text("VIVEK JAGLAN")
+                    Text("PARTH SINH")
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
-                        .padding(.leading,40).padding()
+                        .padding(.leading,60).padding()
 
                     HStack {
                         StatViewstat(label: "17.8", description: "PPG")
                         StatViewstat(label: "3.4", description: "BPG")
                         StatViewstat(label: "9", description: "AST")
-                    }.padding(.leading,40)
+                    }.padding(.leading,60).padding(.bottom,10)
                 }
                 
                 Spacer()
@@ -45,7 +45,7 @@ struct HeaderView: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color(red: 253/255, green: 100/255, blue: 48/255)) // FD6430 color
-        .cornerRadius(40)
+        .cornerRadius(50)
         .ignoresSafeArea(edges: .top) // Allow the header to extend above the safe area
     }
 }

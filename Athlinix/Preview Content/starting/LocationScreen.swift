@@ -2,6 +2,7 @@ import SwiftUI
 
 struct LocationScreen: View {
     @State private var location: String = ""
+    @Binding var selectedButton: String // Add the binding for selectedButton
 
     var body: some View {
         VStack(alignment: .leading) { // Align content to the leading edge (left)
@@ -24,7 +25,7 @@ struct LocationScreen: View {
                 .cornerRadius(5)
                 .padding(.bottom, 20) // Padding below the TextField
 
-            NavigationLink(destination: GenderScreen()) {
+            NavigationLink(destination: GenderScreen(selectedButton: $selectedButton)) { // Pass selectedButton binding
                 Text("Next")
                     .font(.headline)
                     .padding()
@@ -43,8 +44,7 @@ struct LocationScreen: View {
     }
 }
 
-struct Location_Previews: PreviewProvider {
-    static var previews: some View {
-        LocationScreen() // Preview the LocationScreen
-    }
+#Preview {
+    @State var dummyButton = "home"
+    LocationScreen(selectedButton: $dummyButton) // Simulate binding for preview
 }

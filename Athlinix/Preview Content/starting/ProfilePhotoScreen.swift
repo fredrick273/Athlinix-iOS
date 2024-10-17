@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfilePhotoScreen: View {
     @State private var showImagePicker: Bool = false
     @State private var selectedImage: UIImage?
+    @Binding var selectedButton: String // Add a binding for selectedButton
 
     var body: some View {
         VStack {
@@ -34,7 +35,7 @@ struct ProfilePhotoScreen: View {
             }
             .buttonStyle(PlainButtonStyle()) // Prevent button style interference
 
-            NavigationLink(destination: RoleSelectionScreen()) {
+            NavigationLink(destination: RoleSelectionScreen(selectedButton: $selectedButton)) {
                 Text("Next")
                     .font(.headline)
                     .padding()
@@ -55,8 +56,9 @@ struct ProfilePhotoScreen: View {
     }
 }
 
-struct Profile: PreviewProvider {
+struct ProfilePhoto_Previews: PreviewProvider {
     static var previews: some View {
-        ProfilePhotoScreen() // Preview the ProfilePhotoScreen
+        @State var dummyButton: String = "home"
+        ProfilePhotoScreen(selectedButton: $dummyButton) // Preview with binding
     }
 }

@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct LogoScreen: View {
+    @State private var selectedButton: String = "home" // Default selected button
+
     var body: some View {
         NavigationView {
             VStack {
                 Spacer()
-                NavigationLink(destination: HomeScreen()) {
+                NavigationLink(destination: HomeScreen(selectedButton: $selectedButton)) { // Pass binding to HomeScreen
                     Image("logo") // Replace with your logo image
                         .resizable()
                         .frame(width: 200, height: 150)

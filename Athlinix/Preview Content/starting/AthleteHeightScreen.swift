@@ -3,6 +3,7 @@ import SwiftUI
 struct AthleteHeightScreen: View {
     @State private var height: Double = 170 // Default height value
     let heights: [Double] = Array(100...250).map { Double($0) } // Range of heights from 100 to 250 cm
+    @Binding var selectedButton: String // Declare a binding for selectedButton
 
     var body: some View {
         VStack {
@@ -20,7 +21,7 @@ struct AthleteHeightScreen: View {
             .frame(maxHeight: 200) // Adjust the height to suit the wheel display
             .padding()
 
-            NavigationLink(destination: AthleteWeightScreen()) {
+            NavigationLink(destination: AthleteWeightScreen(selectedButton: $selectedButton)) { // Pass the binding here
                 Text("Next")
                     .font(.headline)
                     .padding()
@@ -40,6 +41,8 @@ struct AthleteHeightScreen: View {
 
 struct Height_Previews: PreviewProvider {
     static var previews: some View {
-        AthleteHeightScreen() // Preview the AthleteHeightScreen
+        // Create a preview with a dummy binding
+        @State var dummyButton: String = "home"
+        return AthleteHeightScreen(selectedButton: $dummyButton) // Pass a binding for preview
     }
 }
