@@ -37,7 +37,7 @@ struct BarChartView: View {
             AxisMarks(values: .automatic) // Automatically handle category labels
         }
         .frame(height: 350)
-        .padding()
+        .padding().padding(.bottom,50)
     }
 }
 
