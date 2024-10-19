@@ -7,7 +7,8 @@ struct ProfileNavBar: View {
         CustomNavBar(selectedButton: $selectedButton)
             .onAppear {
                 selectedButton = "profile" // Set default selection to profile when view appears
-            }.padding(.top,40)
+            }
+            .padding(.top, 40)
     }
 }
 

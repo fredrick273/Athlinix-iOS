@@ -8,19 +8,22 @@ struct ProfileStat: View {
             VStack(spacing: 0) { // Set spacing to 0 to ensure the views are tightly packed
                 // Keep ProfileView at the top of the screen
                 
-                
                 // Wrap the scrollable content in a ScrollView
                 ScrollView {
                     VStack {
                         ProfileView()
                         ProfileInfoView()
                         StatsView()
+                        Spacer()
+                        Spacer()
                         TeamsView()
-                        BestGameView()
+                        Spacer()
+                        AllMatchesListbest()
                         // Add more views here if needed
                         // Add a spacer to prevent the last view from being too close to the navbar
                         Spacer()
-                            .frame(height: 60) // Reserve space for the navbar
+                        SocialMediaFeedView()
+                             // Reserve space for the navbar
                     }
                     .padding(.bottom, 60) // Padding to avoid overlapping with the navbar
                 }
@@ -32,6 +35,7 @@ struct ProfileStat: View {
             }
             .background(Color(.systemGray6))
             .edgesIgnoringSafeArea(.top)
+             // Hide the back button
         }
     }
 }
