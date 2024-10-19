@@ -1,29 +1,38 @@
 import SwiftUI
 
-struct ProfileStat: View {
-    @Binding var selectedButton: String // Use binding to track the selected state
-
+struct ProfileView: View {
     var body: some View {
-        VStack {
-            // Your Profile content here
-            Text("Profile Page")
-                .font(.largeTitle)
-                .padding()
-
-            // Example of how to change the selected button
-            Button(action: {
-                selectedButton = "profile"
-            }) {
-                Text("Set Profile as Selected")
+        ZStack {
+            // Blurred background using the same profile image
+            Image("profile") // Replace with your actual profile image
+                .resizable()
+                .scaledToFill()
+                .frame(width: UIScreen.main.bounds.width, height: 250)
+                .blur(radius: 20)
+                .clipped()
+                .edgesIgnoringSafeArea(.all).shadow(radius: 50).padding(.bottom,60)
+            
+            VStack {
+                
+                
+                // Circle profile image in the middle
+                Image("profile") // Replace with your actual profile image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 120, height: 120)
+                    .clipShape(Circle()).padding(.top,50)
+//                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                    .shadow(radius: 10)
+                
+                // Best Game at the bottom
             }
+            .padding(.top, 120) // Adjust the spacing if necessary
         }
-        .navigationTitle("Profile") // Optional: set a title for navigation
-        .navigationBarHidden(false) // Optional: show navigation bar
     }
 }
 
-struct Profile_Previews: PreviewProvider {
+struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileStat(selectedButton: .constant("profile")) // Provide a default binding for previews
+        ProfileView()
     }
 }

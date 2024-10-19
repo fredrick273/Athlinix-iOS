@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct InstagramFeedView: View {
-    @State private var likedPosts: Set<UUID> = [] // Track liked posts by their IDs
-    @State private var comments: [UUID: String] = [:] // Track comments for each post
-    @State private var commentInput: String = "" // Input field for comments
+    @State private var likedPosts: Set<UUID> = []
+    @State private var comments: [UUID: String] = [:]
+    @State private var commentInput: String = ""
 
     let posts: [Post] = [
         Post(user: User(name: "john_doe", profileImage: "person.circle.fill"), images: ["feed1", "feed3"], likes: 120, caption: "Just scored the game-winning shot!", teamLogo: "lakers"),
@@ -17,136 +17,176 @@ struct InstagramFeedView: View {
         ScrollView {
             VStack(spacing: 15) {
                 ForEach(posts) { post in
-                    VStack(alignment: .leading, spacing: 10) {
-                        // User profile section
-                        HStack {
-                            Image(systemName: post.user.profileImage)
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
-                                .padding(.trailing, 10)
-
-                            Text(post.user.name)
-                                .font(.headline)
-                                .foregroundColor(.primary) // Text color
-
-                            Spacer()
-
-                            Image(systemName: "ellipsis")
-                                .padding(.trailing, 10)
-                                .foregroundColor(.gray) // Gray color for the ellipsis
-                        }
-                        .padding(.horizontal)
-
-                        // Post images (carousel if more than one image)
-                        if post.images.count == 1 {
-                            Image(post.images[0])
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: .infinity)
-                                .cornerRadius(15)
-                                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2) // Soft shadow
-                        } else {
-                            TabView {
-                                ForEach(post.images, id: \.self) { imageName in
-                                    Image(imageName)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(maxWidth: .infinity)
-                                        .cornerRadius(15)
-                                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-                                }
-                            }
-                            .frame(height: 300)
-                            .tabViewStyle(PageTabViewStyle())
-                        }
-
-                        // Like and share buttons with team logo
-                        HStack(spacing: 25) {
-                            Button(action: {
-                                toggleLike(for: post.id)
-                            }) {
-                                Image(systemName: likedPosts.contains(post.id) ? "heart.fill" : "heart")
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
-                                    .foregroundColor(likedPosts.contains(post.id) ? .red : .gray) // Change color based on like status
-                            }
-                            Button(action: {}) {
-                                Image(systemName: "square.and.arrow.up") // Share icon
-                                    .resizable()
-                                    .frame(width: 20, height: 26)
-                                    .foregroundColor(.green) // Change color for better visibility
-                            }
-
-                            Spacer()
-
-                            // Team logo image for each post
-                            Image(post.teamLogo)
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.white, lineWidth: 2)) // White stroke for contrast
-                        }
-                        .padding(.horizontal)
-
-                        // Likes and caption section
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("\(post.likes + (likedPosts.contains(post.id) ? 1 : 0)) likes") // Update like count dynamically
-                                .font(.subheadline)
-                                .fontWeight(.bold)
-                                .foregroundColor(.secondary) // Secondary color for better readability
-                                .padding(.leading, 10)
-
-                            Text(post.user.name)
-                                .font(.headline) +
-                            Text(" \(post.caption)")
-                                .font(.subheadline)
-                                .foregroundColor(.primary)
-                        }
-                        .padding(.horizontal)
-
-                        // Comment section
-                        if let comment = comments[post.id], !comment.isEmpty {
-                            Text("Comment: \(comment)")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                                .padding(.horizontal)
-                        }
-
-                        // Comment input
-                        HStack {
-                            TextField("Add a comment...", text: $commentInput)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .padding(.horizontal)
-
-                            Button("Post") {
-                                if !commentInput.isEmpty {
-                                    comments[post.id] = commentInput // Save comment
-                                    commentInput = "" // Clear input after posting
-                                }
-                            }
-                            .padding(.trailing)
-                        }
-
-                        // Add some padding between posts
-                        Divider()
-                    }
-                    .padding(.vertical) // Add vertical padding to each post
-                    .background(Color.white) // White background for posts
-                    .cornerRadius(15) // Rounded corners for the post container
-                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5) // Soft shadow for the post container
+                    PostView(post: post, likedPosts: $likedPosts, comments: $comments, commentInput: $commentInput)
                 }
             }
-            .padding(.horizontal) // Add horizontal padding to the entire view
-            .background(Color(UIColor.systemGray6)) // Light gray background for the overall view
+            .padding(.horizontal)
+            .background(Color(UIColor.systemGray6))
         }
+    }
+}
+
+// PostView for each post
+struct PostView: View {
+    let post: Post
+    @Binding var likedPosts: Set<UUID>
+    @Binding var comments: [UUID: String]
+    @Binding var commentInput: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            UserProfileView(user: post.user)
+            PostImagesView(images: post.images)
+            LikeShareSection(post: post, likedPosts: $likedPosts)
+            CaptionView(post: post)
+            CommentSection(post: post, comments: $comments, commentInput: $commentInput)
+        }
+        .padding(.vertical)
+        .background(Color.white)
+        .cornerRadius(15)
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
+    }
+}
+
+// UserProfileView to show user information
+struct UserProfileView: View {
+    let user: User
+
+    var body: some View {
+        HStack {
+            Image(systemName: user.profileImage)
+                .resizable()
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+                .padding(.trailing, 10)
+            Text(user.name)
+                .font(.headline)
+                .foregroundColor(.primary)
+            Spacer()
+            Image(systemName: "ellipsis")
+                .padding(.trailing, 10)
+                .foregroundColor(.gray)
+        }
+        .padding(.horizontal)
+    }
+}
+
+// PostImagesView for displaying post images
+struct PostImagesView: View {
+    let images: [String]
+
+    var body: some View {
+        if images.count == 1 {
+            Image(images[0])
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: .infinity)
+                .cornerRadius(15)
+                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+        } else {
+            TabView {
+                ForEach(images, id: \.self) { imageName in
+                    Image(imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity)
+                        .cornerRadius(15)
+                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+                }
+            }
+            .frame(height: 300)
+            .tabViewStyle(PageTabViewStyle())
+        }
+    }
+}
+
+// LikeShareSection for the like and share buttons
+struct LikeShareSection: View {
+    let post: Post
+    @Binding var likedPosts: Set<UUID>
+
+    var body: some View {
+        HStack(spacing: 25) {
+            Button(action: {
+                toggleLike(for: post.id)
+            }) {
+                Image(systemName: likedPosts.contains(post.id) ? "heart.fill" : "heart")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(likedPosts.contains(post.id) ? .red : .gray)
+            }
+            Button(action: {}) {
+                Image(systemName: "square.and.arrow.up")
+                    .resizable()
+                    .frame(width: 20, height: 26)
+                    .foregroundColor(.green)
+            }
+            Spacer()
+            Image(post.teamLogo)
+                .resizable()
+                .frame(width: 50, height: 50)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.white, lineWidth: 2))
+        }
+        .padding(.horizontal)
     }
 
     private func toggleLike(for postId: UUID) {
         if likedPosts.contains(postId) {
-            likedPosts.remove(postId) // Remove like if already liked
+            likedPosts.remove(postId)
         } else {
-            likedPosts.insert(postId) // Add like if not liked yet
+            likedPosts.insert(postId)
+        }
+    }
+}
+
+// CaptionView to show the post caption
+struct CaptionView: View {
+    let post: Post
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text("\(post.likes) likes")
+                .font(.subheadline)
+                .fontWeight(.bold)
+                .foregroundColor(.secondary)
+                .padding(.leading, 10)
+            Text(post.user.name)
+                .font(.headline) +
+            Text(" \(post.caption)")
+                .font(.subheadline)
+                .foregroundColor(.primary)
+        }
+        .padding(.horizontal)
+    }
+}
+
+// CommentSection for handling comments
+struct CommentSection: View {
+    let post: Post
+    @Binding var comments: [UUID: String]
+    @Binding var commentInput: String
+
+    var body: some View {
+        VStack {
+            if let comment = comments[post.id], !comment.isEmpty {
+                Text("Comment: \(comment)")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal)
+            }
+            HStack {
+                TextField("Add a comment...", text: $commentInput)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
+                Button("Post") {
+                    if !commentInput.isEmpty {
+                        comments[post.id] = commentInput
+                        commentInput = ""
+                    }
+                }
+                .padding(.trailing)
+            }
         }
     }
 }
@@ -160,10 +200,10 @@ struct User {
 struct Post: Identifiable {
     let id = UUID()
     let user: User
-    let images: [String] // Supports multiple images
+    let images: [String]
     let likes: Int
     let caption: String
-    let teamLogo: String // Added team logo to the post model
+    let teamLogo: String
 }
 
 // Preview
