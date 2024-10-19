@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct InstagramFeedView: View {
+    @State private var likedPosts: Set<UUID> = [] // Track liked posts by their IDs
+    @State private var comments: [UUID: String] = [:] // Track comments for each post
+    @State private var commentInput: String = "" // Input field for comments
+
     let posts: [Post] = [
         Post(user: User(name: "john_doe", profileImage: "person.circle.fill"), images: ["feed1", "feed3"], likes: 120, caption: "Just scored the game-winning shot!", teamLogo: "lakers"),
         Post(user: User(name: "jane_smith", profileImage: "person.circle.fill"), images: ["feed2", "feed4", "feed5"], likes: 85, caption: "Had an amazing game under the sun!", teamLogo: "spurs1"),
@@ -8,7 +12,7 @@ struct InstagramFeedView: View {
         Post(user: User(name: "mary_queen", profileImage: "person.circle.fill"), images: ["profile3"], likes: 64, caption: "Enjoying a victory celebration!", teamLogo: "warriors"),
         Post(user: User(name: "iamalsauser", profileImage: "person.circle.fill"), images: ["feed3"], likes: 64, caption: "Practicing my free throws at the court.", teamLogo: "toronto"),
     ]
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 15) {
@@ -21,19 +25,19 @@ struct InstagramFeedView: View {
                                 .frame(width: 40, height: 40)
                                 .clipShape(Circle())
                                 .padding(.trailing, 10)
-                            
+
                             Text(post.user.name)
                                 .font(.headline)
                                 .foregroundColor(.primary) // Text color
-                            
+
                             Spacer()
-                            
+
                             Image(systemName: "ellipsis")
                                 .padding(.trailing, 10)
                                 .foregroundColor(.gray) // Gray color for the ellipsis
                         }
                         .padding(.horizontal)
-                        
+
                         // Post images (carousel if more than one image)
                         if post.images.count == 1 {
                             Image(post.images[0])
@@ -56,30 +60,26 @@ struct InstagramFeedView: View {
                             .frame(height: 300)
                             .tabViewStyle(PageTabViewStyle())
                         }
-                        
-                        // Like, comment, share buttons with team logo
+
+                        // Like and share buttons with team logo
                         HStack(spacing: 25) {
-                            Button(action: {}) {
-                                Image(systemName: "heart.fill")
+                            Button(action: {
+                                toggleLike(for: post.id)
+                            }) {
+                                Image(systemName: likedPosts.contains(post.id) ? "heart.fill" : "heart")
                                     .resizable()
                                     .frame(width: 24, height: 24)
-                                    .foregroundColor(.red) // Change color for better visibility
+                                    .foregroundColor(likedPosts.contains(post.id) ? .red : .gray) // Change color based on like status
                             }
                             Button(action: {}) {
-                                Image(systemName: "message.fill")
+                                Image(systemName: "square.and.arrow.up") // Share icon
                                     .resizable()
-                                    .frame(width: 24, height: 24)
-                                    .foregroundColor(.blue) // Change color for better visibility
-                            }
-                            Button(action: {}) {
-                                Image(systemName: "paperplane.fill")
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
+                                    .frame(width: 20, height: 26)
                                     .foregroundColor(.green) // Change color for better visibility
                             }
-                            
+
                             Spacer()
-                            
+
                             // Team logo image for each post
                             Image(post.teamLogo)
                                 .resizable()
@@ -88,15 +88,15 @@ struct InstagramFeedView: View {
                                 .overlay(Circle().stroke(Color.white, lineWidth: 2)) // White stroke for contrast
                         }
                         .padding(.horizontal)
-                        
+
                         // Likes and caption section
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("\(post.likes) likes")
+                            Text("\(post.likes + (likedPosts.contains(post.id) ? 1 : 0)) likes") // Update like count dynamically
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                                 .foregroundColor(.secondary) // Secondary color for better readability
                                 .padding(.leading, 10)
-                            
+
                             Text(post.user.name)
                                 .font(.headline) +
                             Text(" \(post.caption)")
@@ -104,7 +104,30 @@ struct InstagramFeedView: View {
                                 .foregroundColor(.primary)
                         }
                         .padding(.horizontal)
-                        
+
+                        // Comment section
+                        if let comment = comments[post.id], !comment.isEmpty {
+                            Text("Comment: \(comment)")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .padding(.horizontal)
+                        }
+
+                        // Comment input
+                        HStack {
+                            TextField("Add a comment...", text: $commentInput)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .padding(.horizontal)
+
+                            Button("Post") {
+                                if !commentInput.isEmpty {
+                                    comments[post.id] = commentInput // Save comment
+                                    commentInput = "" // Clear input after posting
+                                }
+                            }
+                            .padding(.trailing)
+                        }
+
                         // Add some padding between posts
                         Divider()
                     }
@@ -116,6 +139,14 @@ struct InstagramFeedView: View {
             }
             .padding(.horizontal) // Add horizontal padding to the entire view
             .background(Color(UIColor.systemGray6)) // Light gray background for the overall view
+        }
+    }
+
+    private func toggleLike(for postId: UUID) {
+        if likedPosts.contains(postId) {
+            likedPosts.remove(postId) // Remove like if already liked
+        } else {
+            likedPosts.insert(postId) // Add like if not liked yet
         }
     }
 }
