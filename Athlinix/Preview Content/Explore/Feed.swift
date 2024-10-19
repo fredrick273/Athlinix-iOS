@@ -1,59 +1,143 @@
 import SwiftUI
 
-struct UserProfileview {
-    let name: String
-    let profileImage: String
-    let posts: [String]
-}
-
-struct ProfileView: View {
-    let userProfile: UserProfileview
+struct InstagramFeedView: View {
+    let posts: [Post] = [
+        Post(user: User(name: "john_doe", profileImage: "person.circle.fill"), images: ["feed1", "feed3"], likes: 120, caption: "Just scored the game-winning shot!", teamLogo: "lakers"),
+        Post(user: User(name: "jane_smith", profileImage: "person.circle.fill"), images: ["feed2", "feed4", "feed5"], likes: 85, caption: "Had an amazing game under the sun!", teamLogo: "spurs1"),
+        Post(user: User(name: "alex_king", profileImage: "person.circle.fill"), images: ["feed7", "feed6"], likes: 200, caption: "Exploring new plays with my teammates.", teamLogo: "pistons"),
+        Post(user: User(name: "mary_queen", profileImage: "person.circle.fill"), images: ["profile3"], likes: 64, caption: "Enjoying a victory celebration!", teamLogo: "warriors"),
+        Post(user: User(name: "iamalsauser", profileImage: "person.circle.fill"), images: ["feed3"], likes: 64, caption: "Practicing my free throws at the court.", teamLogo: "toronto"),
+    ]
     
     var body: some View {
         ScrollView {
             VStack(spacing: 15) {
-                // User profile section
-                HStack(spacing: 15) {
-                    Image(userProfile.profileImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 60, height: 60)
-                        .clipShape(Circle())
-                    
-                    Text(userProfile.name)
-                        .font(.title)
-                        .fontWeight(.bold)
-                }
-                .padding(.horizontal)
-
-                // Posts Grid
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 5) {
-                    ForEach(userProfile.posts, id: \.self) { post in
-                        Image(post)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .clipped()
+                ForEach(posts) { post in
+                    VStack(alignment: .leading, spacing: 10) {
+                        // User profile section
+                        HStack {
+                            Image(systemName: post.user.profileImage)
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .clipShape(Circle())
+                                .padding(.trailing, 10)
+                            
+                            Text(post.user.name)
+                                .font(.headline)
+                                .foregroundColor(.primary) // Text color
+                            
+                            Spacer()
+                            
+                            Image(systemName: "ellipsis")
+                                .padding(.trailing, 10)
+                                .foregroundColor(.gray) // Gray color for the ellipsis
+                        }
+                        .padding(.horizontal)
+                        
+                        // Post images (carousel if more than one image)
+                        if post.images.count == 1 {
+                            Image(post.images[0])
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: .infinity)
+                                .cornerRadius(15)
+                                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2) // Soft shadow
+                        } else {
+                            TabView {
+                                ForEach(post.images, id: \.self) { imageName in
+                                    Image(imageName)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(maxWidth: .infinity)
+                                        .cornerRadius(15)
+                                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+                                }
+                            }
+                            .frame(height: 300)
+                            .tabViewStyle(PageTabViewStyle())
+                        }
+                        
+                        // Like, comment, share buttons with team logo
+                        HStack(spacing: 25) {
+                            Button(action: {}) {
+                                Image(systemName: "heart.fill")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .foregroundColor(.red) // Change color for better visibility
+                            }
+                            Button(action: {}) {
+                                Image(systemName: "message.fill")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .foregroundColor(.blue) // Change color for better visibility
+                            }
+                            Button(action: {}) {
+                                Image(systemName: "paperplane.fill")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .foregroundColor(.green) // Change color for better visibility
+                            }
+                            
+                            Spacer()
+                            
+                            // Team logo image for each post
+                            Image(post.teamLogo)
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.white, lineWidth: 2)) // White stroke for contrast
+                        }
+                        .padding(.horizontal)
+                        
+                        // Likes and caption section
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("\(post.likes) likes")
+                                .font(.subheadline)
+                                .fontWeight(.bold)
+                                .foregroundColor(.secondary) // Secondary color for better readability
+                                .padding(.leading, 10)
+                            
+                            Text(post.user.name)
+                                .font(.headline) +
+                            Text(" \(post.caption)")
+                                .font(.subheadline)
+                                .foregroundColor(.primary)
+                        }
+                        .padding(.horizontal)
+                        
+                        // Add some padding between posts
+                        Divider()
                     }
+                    .padding(.vertical) // Add vertical padding to each post
+                    .background(Color.white) // White background for posts
+                    .cornerRadius(15) // Rounded corners for the post container
+                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5) // Soft shadow for the post container
                 }
-                .padding(.horizontal)
             }
+            .padding(.horizontal) // Add horizontal padding to the entire view
+            .background(Color(UIColor.systemGray6)) // Light gray background for the overall view
         }
-        .navigationTitle("Profile")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
+// Models
+struct User {
+    let name: String
+    let profileImage: String
+}
+
+struct Post: Identifiable {
+    let id = UUID()
+    let user: User
+    let images: [String] // Supports multiple images
+    let likes: Int
+    let caption: String
+    let teamLogo: String // Added team logo to the post model
+}
+
+// Preview
+struct InstagramFeedView_Previews: PreviewProvider {
     static var previews: some View {
-        let userProfile = UserProfileview(
-            name: "John Doe",
-            profileImage: "profile_image", // Replace with actual image name
-            posts: [
-                "logo", "apple", "google", "profile",
-                "image5", "image6", "image7", "image8"
-            ]
-        )
-        
-        ProfileView(userProfile: userProfile)
+        InstagramFeedView()
     }
 }
