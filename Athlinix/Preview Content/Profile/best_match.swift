@@ -43,7 +43,7 @@ struct AllMatchesListbest: View {
             }
             .padding()
         }
-        .navigationTitle("Match Summaries")
+        .navigationTitle("Home")
     }
 }
 

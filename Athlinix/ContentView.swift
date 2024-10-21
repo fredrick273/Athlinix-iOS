@@ -2,20 +2,30 @@ import SwiftUI
 
 struct LogoScreen: View {
     @State private var selectedButton: String = "home" // Default selected button
+    @State private var navigateToHome: Bool = false
 
     var body: some View {
         NavigationView {
             VStack {
                 Spacer()
-                NavigationLink(destination: HomeScreen(selectedButton: $selectedButton)) { // Pass binding to HomeScreen
-                    Image("logo") // Replace with your logo image
-                        .resizable()
-                        .frame(width: 200, height: 150)
-                }
+                Image("logo") // Replace with your logo image
+                    .resizable()
+                    .frame(width: 200, height: 150)
                 Spacer()
+                
+                // Navigation link that triggers after 3 seconds
+                NavigationLink(destination: HomeScreen(selectedButton: $selectedButton), isActive: $navigateToHome) {
+                    EmptyView()
+                }
             }
             .navigationTitle("Welcome")
             .navigationBarHidden(true) // Hide the navigation bar if needed
+            .onAppear {
+                // Wait for 3 seconds, then navigate to the HomeScreen
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    navigateToHome = true
+                }
+            }
         }
     }
 }
