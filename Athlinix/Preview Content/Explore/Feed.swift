@@ -14,14 +14,16 @@ struct InstagramFeedView: View {
     ]
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 15) {
-                ForEach(posts) { post in
-                    PostView(post: post, likedPosts: $likedPosts, comments: $comments, commentInput: $commentInput)
+        NavigationView { // Wrap in NavigationView
+            ScrollView {
+                VStack(spacing: 15) {
+                    ForEach(posts) { post in
+                        PostView(post: post, likedPosts: $likedPosts, comments: $comments, commentInput: $commentInput)
+                    }
                 }
+                .padding(.horizontal)
+                .background(Color(UIColor.systemGray6))
             }
-            .padding(.horizontal)
-            .background(Color(UIColor.systemGray6))
         }
     }
 }
@@ -35,7 +37,9 @@ struct PostView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            UserProfileView(user: post.user)
+            NavigationLink(destination: ProfileStat1(selectedButton: .constant("profile"))) { // Navigation link
+                UserProfileView(user: post.user)
+            }
             PostImagesView(images: post.images)
             LikeShareSection(post: post, likedPosts: $likedPosts)
             CaptionView(post: post)

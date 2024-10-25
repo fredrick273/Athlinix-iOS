@@ -7,15 +7,30 @@ struct ProfileInfoView: View {
             HStack(spacing: 5) {
                 Text("Parth Sinh")
                     .font(.title)
-                    .bold().padding(.leading)
+                    .bold()
+                    .padding(.leading)
 
-                // Verified tick image (make sure you have an image named "verifiedTick" in your assets)
-                Image(systemName: "checkmark.seal.fill") // Or replace with your custom image if you have one
+                // Verified tick image
+                Image(systemName: "checkmark.seal.fill")
                     .resizable()
                     .frame(width: 20, height: 20)
                     .foregroundColor(Color(red: 253 / 255, green: 100 / 255, blue: 48 / 255))
- // Change the color to match the verified tick design
             }
+            
+            // Follow button below the name
+            Button(action: {
+                // Add follow action here
+            }) {
+                Text("Follow")
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 14)
+                    .background(Color(red: 253 / 255, green: 100 / 255, blue: 48 / 255))
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+            .padding(.top, 5)
 
             // Role and experience
             Text("Player - 11yrs exp.")
@@ -28,7 +43,6 @@ struct ProfileInfoView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
         }
-//        .padding(.top, 15)
     }
 }
 

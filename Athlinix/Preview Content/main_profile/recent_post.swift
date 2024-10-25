@@ -7,7 +7,7 @@ struct SocialMediaFeedView: View {
 
     let feedPosts: [FeedPost] = [
         
-        FeedPost(author: Account(name: "iamalsauser", avatarImage: "person.circle.fill"), photos: ["feed"], totalLikes: 64, message: "Last Day at SRMIST Court", logo: "pistons"),
+        FeedPost(author: Account(name: "parth", avatarImage: "person.circle.fill"), photos: ["feed"], totalLikes: 64, message: "Last Day at SRMIST Court", logo: "pistons"),
     ]
 
     var body: some View {

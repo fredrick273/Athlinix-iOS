@@ -32,6 +32,9 @@ struct StatsView: View {
                 }
             }
             .padding(.horizontal) // Horizontal padding for the performance stats
+            
+            // HStack for Follow and Share buttons
+             // Adjust padding as needed
         }
         .padding(.vertical) // Vertical padding for the whole view
         .background(Color(.systemGroupedBackground)) // Background for a grouped effect
