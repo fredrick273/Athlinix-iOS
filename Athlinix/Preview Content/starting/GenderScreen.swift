@@ -23,7 +23,7 @@ struct GenderScreen: View {
                     .font(.headline)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.blue)
+                    .background(Color(red: 253 / 255, green: 100 / 255, blue: 48 / 255)) // Use the custom color
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }

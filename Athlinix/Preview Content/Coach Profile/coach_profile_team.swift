@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct TeamsView1_: View {
-    let teams = ["lakers", "cavs", "heat", "warriors"] // Replace with actual team images
+struct cTeamsView: View {
+    let teams = ["lakers", "toronto", "spurs1", "warriors"] // Replace with actual team images
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -55,7 +55,7 @@ struct TeamsView1_: View {
     }
 }
 
-struct TeamsView_Previews1_: PreviewProvider {
+struct cTeamsView_Previews: PreviewProvider {
     static var previews: some View {
         TeamsView()
             .previewLayout(.sizeThatFits)
