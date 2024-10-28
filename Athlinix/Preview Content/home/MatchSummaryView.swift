@@ -59,10 +59,11 @@ struct MatchSummaryViewFormat1: View {
             .padding(.horizontal)
 
             // Additional details
-            Text("Match Summary Details")
-                .font(.footnote)
-                .foregroundColor(.gray)
-                .padding(.top)
+            NavigationLink(destination: TorapsStatsView()){
+                Text("Match Summary Details")
+                    .font(.footnote)
+                    .foregroundColor(.gray)
+                .padding(.top)}
         }
         .padding()
         .background(Color.white)

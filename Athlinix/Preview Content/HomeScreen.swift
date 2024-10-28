@@ -47,6 +47,7 @@ struct HomeScreen: View {
                     .padding(.horizontal)
 
                     // Match Summary View (example)
+                    
                     MatchSummaryViewFormat1(
                         teamA: "Lakers",
                         teamB: "Spurs",

@@ -1,0 +1,27 @@
+{
+    "monthly": [
+        { "period": "Jan", "points": 150 },
+        { "period": "Feb", "points": 170 },
+        { "period": "Mar", "points": 120 },
+        { "period": "Apr", "points": 200 },
+        { "period": "May", "points": 180 },
+        { "period": "Jun", "points": 220 },
+        { "period": "Jul", "points": 195 },
+        { "period": "Aug", "points": 170 },
+        { "period": "Sep", "points": 210 },
+        { "period": "Oct", "points": 230 },
+        { "period": "Nov", "points": 190 },
+        { "period": "Dec", "points": 250 }
+    ],
+    "weekly": [
+        { "period": "Week 1", "points": 50 },
+        { "period": "Week 2", "points": 70 },
+        { "period": "Week 3", "points": 100 },
+        { "period": "Week 4", "points": 80 }
+    ],
+    "annual": [
+        { "period": "2021", "points": 1800 },
+        { "period": "2022", "points": 2100 },
+        { "period": "2023", "points": 2000 }
+    ]
+}

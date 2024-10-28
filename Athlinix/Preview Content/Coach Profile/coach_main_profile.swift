@@ -22,7 +22,7 @@ struct cProfileStat: View {
                         // Add more views here if needed
                         // Add a spacer to prevent the last view from being too close to the navbar
                         Spacer()
-                        SocialMediaFeedView()
+                        cSocialMediaFeedView()
                              // Reserve space for the navbar
                     }
                     .padding(.bottom, 60) // Padding to avoid overlapping with the navbar

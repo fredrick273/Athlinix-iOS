@@ -12,8 +12,10 @@ struct HeaderView: View {
 
                 Spacer()
 
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(.white)
+                NavigationLink(destination: CreatePostView()) {
+                                        Image(systemName: "plus")
+                                            .foregroundColor(.white)
+                                    }
             }
             .padding(.top, 40) // Adjust padding for status bar overlap
             .padding(.horizontal)
