@@ -2,33 +2,44 @@ import SwiftUI
 
 struct Explore: View {
     @Binding var selectedButton: String // Use binding to track the selected state
-    @Environment(\.presentationMode) var presentationMode // Access the environment variable for navigation control
+    @State private var searchText: String = "" // State variable for the search text
     
     var body: some View {
-        VStack {
-            // Custom Back Button
-            HStack {
-                Button(action: {
-                    presentationMode.wrappedValue.dismiss() // Dismiss the current view and go back
-                }) {
+        GeometryReader { geometry in
+            VStack(spacing: 0) { // Ensure no spacing between content and navigation bar
+                
+                // Custom Navigation Bar with Search Bar
+                HStack {
+                    // Search bar with magnifying glass icon
                     HStack {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.blue) // Change color as needed
-                        Text("Back")
-                            .foregroundColor(.blue)
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                        
+                        TextField("Search...", text: $searchText)
+                            .foregroundColor(.primary)
+                            .padding(7)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(8)
                     }
+                    .padding(.horizontal).padding(.bottom)
+                    
+                    Spacer()
                 }
-                .padding(.bottom,0).padding(.leading) // Padding for the button
-                Spacer()
+                .padding(.top) // Add padding to the top if needed for spacing
+                
+                // Content of Explore Page
+                InstagramFeedView() // Feed view integrated
+                
+                Spacer() // Add spacer to maintain layout balance
+                
+                // ProfileNavBar at the bottom
+                ProfileNavBar()
+                    .frame(width: geometry.size.width, height: 0) // Set the width and height of the navbar
+                    .background(Color.white).padding(.bottom,60)
             }
-            
-            // Content of Explore Page
-            InstagramFeedView() // Feed view integrated
-            
-            Spacer() // Add spacer to maintain layout balance
+            .navigationBarHidden(true) // Hide the default navigation bar
+            .edgesIgnoringSafeArea(.bottom) // Extend the view to the bottom edge, covering any white space
         }
-        .navigationBarHidden(true) // Hide the navigation bar
-        .edgesIgnoringSafeArea(.bottom) // Extend the view to the edges, removing the white space
     }
 }
 

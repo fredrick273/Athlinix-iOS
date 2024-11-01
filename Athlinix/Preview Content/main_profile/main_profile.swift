@@ -35,6 +35,7 @@ struct ProfileStat: View {
             }
             .background(Color(.systemGray6))
             .edgesIgnoringSafeArea(.top)
+            .navigationBarHidden(true)
              // Hide the back button
         }
     }

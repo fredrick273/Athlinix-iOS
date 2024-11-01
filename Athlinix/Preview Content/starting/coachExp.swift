@@ -21,7 +21,7 @@ struct coachexp: View {
             .frame(maxHeight: 200) // Adjust the height to suit the wheel display
             .padding()
 
-            NavigationLink(destination: YearsPlayingScreen(selectedButton: $selectedButton)) { // Pass the binding here
+            NavigationLink(destination: CoachCertificationScreen(selectedButton: $selectedButton)) { // Pass the binding here
                 Text("Next")
                     .font(.headline)
                     .padding()

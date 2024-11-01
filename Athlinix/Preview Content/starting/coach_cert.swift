@@ -43,7 +43,7 @@ struct CoachCertificationScreen: View {
                 .padding()
                 .frame(maxWidth: .infinity)
 
-            NavigationLink(destination: HomeScreen(selectedButton: $selectedButton)) {
+            NavigationLink(destination: cProfileStat(selectedButton: $selectedButton)) {
                 Text("Finish")
                     .font(.headline)
                     .padding()
